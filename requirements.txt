@@ -1,0 +1,13 @@
+# Python >= 3.11 (tomllib)
+aiohttp>=3.9
+numpy>=1.26
+opencv-python>=4.8
+pandas>=2.0
+matplotlib>=3.8
+cryptography>=42
+pytest>=8
+segno>=1.5        # optional: QR code with the phone address
+# cloud recorder (cloud_app/) tests on the PC; Render itself installs cloud_app/requirements.txt
+fastapi==0.156.8
+uvicorn==0.54.0
+httpx>=0.27

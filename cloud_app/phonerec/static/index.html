@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Phone Sensor Recorder</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>Phone Sensor Recorder</h1>
+    <p id="status" class="status info" role="status" aria-live="polite">Loading…</p>
+  </header>
+
+  <section class="card" id="access-card">
+    <h2>1. Access</h2>
+    <label for="token">Access token</label>
+    <div class="row">
+      <input id="token" type="password" autocomplete="off" autocapitalize="off" spellcheck="false"
+             placeholder="APP_ACCESS_TOKEN">
+      <button id="check-token" type="button" class="secondary">Check</button>
+    </div>
+    <p class="hint">Kept only in this page’s memory and sent in a request header, never in a link.
+      Reloading the page forgets it.</p>
+  </section>
+
+  <section class="card">
+    <h2>2. Record</h2>
+    <div class="buttons">
+      <button id="enable" type="button">Enable camera &amp; sensors</button>
+      <button id="start" type="button" disabled>Start recording</button>
+      <button id="stop" type="button" class="danger" disabled>Stop recording</button>
+      <button id="download" type="button" class="secondary" disabled>Download recording</button>
+    </div>
+
+    <video id="preview" playsinline muted autoplay></video>
+
+    <details id="settings">
+      <summary>Capture settings (requested targets)</summary>
+      <label>Resolution
+        <select id="res">
+          <option value="320x240">320 × 240</option>
+          <option value="640x480" selected>640 × 480</option>
+          <option value="1280x720">1280 × 720</option>
+        </select>
+      </label>
+      <label>Frames per second
+        <select id="fps">
+          <option>1</option><option>2</option><option selected>5</option><option>10</option><option>15</option>
+        </select>
+      </label>
+      <label>JPEG quality <output id="quality-out">0.70</output>
+        <input id="quality" type="range" min="0.3" max="0.95" step="0.05" value="0.7">
+      </label>
+      <p class="hint">Change before “Enable”. The phone may deliver a different size or rate; the actual
+        values are shown below and saved with the recording.</p>
+    </details>
+
+    <h3>Capture</h3>
+    <dl class="grid">
+      <dt>Session</dt><dd id="v-session">none</dd>
+      <dt>Camera</dt><dd id="v-camera">not enabled</dd>
+      <dt>Encoded frame</dt><dd id="v-encoded">–</dd>
+      <dt>Frame rate (observed)</dt><dd id="v-fps">–</dd>
+      <dt>Frames captured / accepted</dt><dd id="v-frames">0 / 0</dd>
+      <dt>Frames failed / dropped</dt><dd id="v-frames-bad">0 / 0</dd>
+      <dt>Frame upload queue</dt><dd id="v-fqueue">0</dd>
+      <dt>Motion events (observed)</dt><dd id="v-motion-hz">–</dd>
+      <dt>Orientation events (observed)</dt><dd id="v-orient-hz">–</dd>
+      <dt>IMU samples captured / accepted</dt><dd id="v-imu">0 / 0</dd>
+      <dt>IMU samples failed / dropped</dt><dd id="v-imu-bad">0 / 0</dd>
+      <dt>IMU upload queue</dt><dd id="v-iqueue">0</dd>
+      <dt>Upload retries</dt><dd id="v-retries">0</dd>
+      <dt>Last upload error</dt><dd id="v-error">none</dd>
+    </dl>
+
+    <h3>Sensors</h3>
+    <table id="sensors">
+      <thead><tr><th scope="col">Reading</th><th scope="col">x / α</th><th scope="col">y / β</th><th scope="col">z / γ</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">acceleration (m/s²)</th><td id="s-acc-0">–</td><td id="s-acc-1">–</td><td id="s-acc-2">–</td></tr>
+        <tr><th scope="row">acceleration incl. gravity (m/s²)</th><td id="s-accg-0">–</td><td id="s-accg-1">–</td><td id="s-accg-2">–</td></tr>
+        <tr><th scope="row">rotation rate (deg/s)</th><td id="s-rot-0">–</td><td id="s-rot-1">–</td><td id="s-rot-2">–</td></tr>
+        <tr><th scope="row">orientation (deg)</th><td id="s-ori-0">–</td><td id="s-ori-1">–</td><td id="s-ori-2">–</td></tr>
+      </tbody>
+    </table>
+    <p id="sensor-note" class="hint">Sensors not enabled yet.</p>
+  </section>
+
+  <section class="card">
+    <h2>3. Recordings on the server</h2>
+    <p class="hint">Open this page on your PC to download recordings. <strong>Storage is temporary:</strong>
+      download soon after recording. A server restart or redeploy deletes everything.</p>
+    <button id="refresh" type="button" class="secondary">Refresh list</button>
+    <p id="storage" class="hint"></p>
+    <div id="sessions"></div>
+  </section>
+
+  <section class="card notes">
+    <h2>Notes</h2>
+    <ul>
+      <li>Keep this page open and the screen on while recording. Phones pause or stop the camera and
+        sensors when the page is in the background.</li>
+      <li>Timestamps use the phone’s <code>performance.now()</code>. Frame times are capture estimates.
+        Motion events carry browser dispatch times, not hardware sensor timestamps.</li>
+      <li>Rotation rate is in degrees per second, as the browser reports it. Missing values are saved as
+        null and shown as “unavailable”, never as 0.</li>
+      <li>The free server sleeps after about 15 minutes without traffic; the first load can take up to a minute.</li>
+    </ul>
+  </section>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

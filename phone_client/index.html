@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Phone Sensor Streamer</title>
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+  <header>
+    <span id="conn" class="pill off">offline</span>
+    <span id="rec" class="pill hidden">REC</span>
+    <span id="sid" class="muted"></span>
+  </header>
+
+  <div id="secure-warning" class="warn hidden">
+    This page is not a secure context, so the browser will block the camera and motion sensors.
+    Open it via <b>https://&lt;pc-ip&gt;:8443</b> (Wi-Fi) or <b>http://localhost:8080</b> (USB + adb reverse).
+  </div>
+
+  <video id="preview" muted playsinline autoplay></video>
+
+  <section id="stats">
+    <div><span class="k">video</span> <span id="s-video">--</span></div>
+    <div><span class="k">IMU</span> <span id="s-imu">--</span></div>
+    <div><span class="k">drops</span> <span id="s-drops">--</span></div>
+    <div><span class="k">timing</span> <span id="s-timing">--</span></div>
+  </section>
+
+  <section id="controls">
+    <button id="start">Start streaming</button>
+    <button id="stop" disabled>Stop</button>
+  </section>
+
+  <details id="settings">
+    <summary>Settings</summary>
+    <label>Resolution
+      <select id="res">
+        <option value="640x480">640 x 480</option>
+        <option value="1280x720">1280 x 720</option>
+        <option value="1920x1080">1920 x 1080</option>
+      </select>
+    </label>
+    <label>Frame rate <select id="fps"><option>10</option><option>15</option><option>24</option><option>30</option></select></label>
+    <label>JPEG quality <input id="quality" type="range" min="0.5" max="0.95" step="0.05"> <span id="quality-v"></span></label>
+    <label>IMU rate (requested) <select id="imuhz"><option>50</option><option>60</option><option>100</option><option>200</option></select></label>
+    <label><input id="gnss" type="checkbox"> GNSS (location)</label>
+    <p class="muted">Settings apply on the next Start. Recording is controlled on the PC (key <b>r</b>).</p>
+  </details>
+
+  <p class="muted small">Research prototype for passenger-only or offline data collection. Never handle the phone while driving.</p>
+
+  <script src="static/app.js"></script>
+</body>
+</html>

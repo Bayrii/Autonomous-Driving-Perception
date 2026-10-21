@@ -1,0 +1,6 @@
+# Render web service (Python 3.12). Wheels verified for linux x86_64 / CPython 3.12.
+fastapi==0.156.8
+uvicorn==0.54.0
+pydantic==2.14.1
+opencv-python-headless==5.0.0.93
+numpy==2.5.4

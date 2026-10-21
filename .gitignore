@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+# recorded data and generated artefacts (share sessions separately; they are large)
+sessions/
+certs/
+configs/local.toml
+# secrets and cloud-app recordings
+.env
+*.env
+!.env.example
+cloud_app/data/
+phone-recordings/
+recordings/
+*.mp4
+board.png

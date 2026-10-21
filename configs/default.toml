@@ -1,0 +1,36 @@
+# Default configuration. Override with:  python -m pc_app live --config configs/my.toml
+# (only the keys you set are overridden).
+
+[server]
+http_host = "127.0.0.1"   # plain HTTP: USB via `adb reverse`, simulator and local tools
+http_port = 8080
+https_host = "0.0.0.0"    # HTTPS for phones on Wi-Fi (self-signed certificate)
+https_port = 8443
+cert_dir = "certs"
+ping_interval_s = 0.5     # clock-sync ping period
+
+[recording]
+sessions_dir = "sessions"
+
+[client]                  # defaults shown on the phone page (editable there)
+width = 1280
+height = 720
+fps = 30
+jpeg_quality = 0.8
+imu_hz = 100              # requested; browsers may cap it (Chrome ~60 Hz for devicemotion)
+gnss = false
+max_buffered_bytes = 1500000   # phone drops frames instead of queueing beyond this
+
+[tunnel]                  # phone on any network (e.g. mobile data), see README "No shared Wi-Fi"
+public_url = ""           # set in configs/local.toml: your VS Code forwarded address for port 8080
+ssh_host = "localhost.run"  # --tunnel: free SSH tunnel, works but only ~0.3 Mb/s (IMU fine, video ~1 fps)
+
+[tunnel.client]           # lighter stream defaults over the internet (~2-4 Mb/s instead of 10-30)
+width = 640
+height = 480
+fps = 15
+jpeg_quality = 0.7
+
+[viewer]
+display_height = 540
+plot_window_s = 5.0
